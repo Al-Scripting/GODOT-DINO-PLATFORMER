@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://b1es3e7sh7tee"]
+
+[ext_resource type="Texture2D" uid="uid://ckcvniys0bwja" path="res://Sprites/Ball_Outlined.png" id="1_av8ch"]
+[ext_resource type="Script" path="res://Scripts/Obstacle.gd" id="1_y4005"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6ikbx"]
+radius = 34.0
+
+[node name="Obstacle2" type="CharacterBody2D" groups=["Obstacles"]]
+scale = Vector2(0.2, 0.2)
+script = ExtResource("1_y4005")
+
+[node name="Sprite2D" type="Sprite2D" parent="." groups=["Obstacles"]]
+texture = ExtResource("1_av8ch")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["Obstacles"]]
+shape = SubResource("CircleShape2D_6ikbx")

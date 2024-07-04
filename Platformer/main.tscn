@@ -1,0 +1,97 @@
+[gd_scene load_steps=9 format=3 uid="uid://bwri2rp2njtad"]
+
+[ext_resource type="Texture2D" uid="uid://jjv0yaka81as" path="res://Sprites/Blank.png" id="1_gfoio"]
+[ext_resource type="Script" path="res://Scripts/Game_Manager.gd" id="1_jvg4o"]
+[ext_resource type="PackedScene" uid="uid://bqhmamekf6ht2" path="res://Objects/Dino.tscn" id="2_fyqmb"]
+[ext_resource type="PackedScene" uid="uid://br4l7fpt0lxj1" path="res://Objects/Spawner.tscn" id="3_46a3l"]
+[ext_resource type="Script" path="res://Scripts/Edge_Script.gd" id="5_6q4mj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bqkx4"]
+size = Vector2(802, 29)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bq3ik"]
+size = Vector2(803, 33)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1yyvf"]
+size = Vector2(51, 292)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_jvg4o")
+
+[node name="Background" type="Sprite2D" parent="."]
+modulate = Color(6.257e-07, 0.452751, 0.597817, 1)
+position = Vector2(401.5, 300.5)
+scale = Vector2(12.4844, 9.35938)
+texture = ExtResource("1_gfoio")
+
+[node name="Floor_1" type="StaticBody2D" parent="."]
+
+[node name="Spawner" parent="Floor_1" instance=ExtResource("3_46a3l")]
+position = Vector2(833, 223)
+
+[node name="Dino" parent="Floor_1" instance=ExtResource("2_fyqmb")]
+modulate = Color(1, 0.137255, 1, 1)
+position = Vector2(69, 217)
+
+[node name="Sprite2D" type="Sprite2D" parent="Floor_1"]
+modulate = Color(0.110264, 0.467012, 0.255483, 1)
+position = Vector2(402.75, 585)
+scale = Vector2(12.5703, 0.484375)
+texture = ExtResource("1_gfoio")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor_1"]
+position = Vector2(401, 584.5)
+shape = SubResource("RectangleShape2D_bqkx4")
+
+[node name="Floor_2" type="StaticBody2D" parent="."]
+
+[node name="Spawner2" parent="Floor_2" instance=ExtResource("3_46a3l")]
+position = Vector2(831, 539)
+
+[node name="Dino2" parent="Floor_2" instance=ExtResource("2_fyqmb")]
+position = Vector2(68, 533)
+
+[node name="Sprite2D" type="Sprite2D" parent="Floor_2"]
+modulate = Color(0.109804, 0.466667, 0.254902, 1)
+position = Vector2(404.5, 271)
+scale = Vector2(12.5781, 0.53125)
+texture = ExtResource("1_gfoio")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor_2"]
+position = Vector2(401.5, 270.5)
+shape = SubResource("RectangleShape2D_bq3ik")
+
+[node name="Edge_1" type="Area2D" parent="."]
+script = ExtResource("5_6q4mj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Edge_1"]
+position = Vector2(-30, 136)
+shape = SubResource("RectangleShape2D_1yyvf")
+
+[node name="Edge_2" type="Area2D" parent="."]
+script = ExtResource("5_6q4mj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Edge_2"]
+position = Vector2(-32, 455)
+shape = SubResource("RectangleShape2D_1yyvf")
+
+[node name="Label" type="Label" parent="."]
+offset_left = 6.0
+offset_top = 3.0
+offset_right = 107.0
+offset_bottom = 26.0
+text = "P1:99 | P2:99
+"
+
+[connection signal="Assign_P2" from="." to="Floor_2/Dino2" method="_on_main_assign_p_2"]
+[connection signal="Attack" from="Floor_1/Dino" to="." method="_on_dino_attack"]
+[connection signal="Attack" from="Floor_1/Dino" to="Floor_1/Dino" method="_on_attack"]
+[connection signal="Defeat" from="Floor_1/Dino" to="." method="_on_dino_defeat"]
+[connection signal="Defeat" from="Floor_1/Dino" to="Floor_1/Spawner" method="_on_dino_defeat"]
+[connection signal="Attack" from="Floor_2/Dino2" to="Floor_1/Dino" method="_on_dino_2_attack"]
+[connection signal="Defeat" from="Floor_2/Dino2" to="." method="_on_dino_2_defeat"]
+[connection signal="Defeat" from="Floor_2/Dino2" to="Floor_2/Spawner2" method="_on_dino_2_defeat"]
+[connection signal="body_entered" from="Edge_1" to="Edge_1" method="_on_body_entered"]
+[connection signal="destroyed_obstacle" from="Edge_1" to="." method="_on_edge_1_destroyed_obstacle"]
+[connection signal="body_entered" from="Edge_2" to="Edge_2" method="_on_body_entered"]
+[connection signal="destroyed_obstacle" from="Edge_2" to="." method="_on_edge_2_destroyed_obstacle"]
